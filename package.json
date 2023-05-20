@@ -1,0 +1,12 @@
+{
+  "name": "folder-to-post",
+  "version": "1.0.0",
+  "description": "a utility for converting folders into blog posts",
+  "main": "src/index.ts",
+  "author": "Joelle Plow <joelleplow@pm.me>",
+  "license": "MIT",
+  "dependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
