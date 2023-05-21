@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.2.1"
+  },
+  "scripts": {
+    "demo": "ts-node ./src/cli.ts ./examples/single-text-file"
   }
 }
