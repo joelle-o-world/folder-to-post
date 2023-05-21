@@ -1,15 +1,17 @@
 import { copyFile, readFile, readdir, writeFile } from "fs/promises";
-import { basename } from "path";
+import { basename, dirname } from "path";
 import { extname, resolve } from "path";
 
 class FolderToPost {
   readonly pathToFolder: string;
   private directoryContents: string[];
-  readonly destination: string;
+  readonly outputPath: string;
+  readonly outputFolder: string;
 
-  constructor(pathToFolder: string, settings: { destination: string }) {
+  constructor(pathToFolder: string, settings: { outputPath: string }) {
     this.pathToFolder = pathToFolder;
-    this.destination = settings.destination;
+    this.outputPath = settings.outputPath;
+    this.outputFolder = dirname(this.outputPath);
   }
 
   async run() {
@@ -111,13 +113,13 @@ class FolderToPost {
     return Promise.all([this.writeHtml(markup), this.copyAssets(markup)]);
   }
   async writeHtml(markup: Markup) {
-    const path = resolve(this.destination, "post.html");
+    const path = this.outputPath;
     await writeFile(path, markup.html);
   }
   async copyAssets(markup: Markup) {
     await Promise.all(
       markup.assets.map(({ src, dest }) =>
-        copyFile(src, resolve(this.pathToFolder, dest))
+        copyFile(src, resolve(this.outputFolder, dest))
       )
     );
   }
