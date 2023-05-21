@@ -48,9 +48,11 @@ class FolderToPost {
 
   async listFiles() {
     if (!this.directoryContents)
-      this.directoryContents = (await readdir(this.pathToFolder)).filter(
-        (filename: string) => !/^_/.test(filename)
-      );
+      this.directoryContents = (await readdir(this.pathToFolder))
+        // Remove hidden files
+        .filter((filename: string) => !/^_/.test(filename))
+        // Remove .DS_Store
+        .filter((filename: string) => filename !== ".DS_Store");
     return this.directoryContents;
   }
 
@@ -72,9 +74,13 @@ class FolderToPost {
 
   markupFile(path: string) {
     const extension = extname(path);
-    switch (extension) {
+    switch (extension.toLowerCase()) {
       case ".txt":
         return this.markupTextFile(path);
+      case ".jpeg":
+      case ".jpg":
+      case ".png":
+        return this.markupImage(path);
       default:
         throw new Error(
           `Don't know how to markup file with extension '${extension}': ${path}`
